@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Proverbs Profits</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #f7f8fa; color: #222;
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+    }
+    .top-banner {
+      width: 100%; background: #fff; border-bottom: 1px solid #eee;
+      padding: 14px 20px; text-align: center; position: sticky; top: 0; z-index: 10;
+    }
+    .top-banner .logo {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; font-size: 1.55rem; font-weight: 800;
+    }
+    .top-banner .logo .proverbs { color: #1a1a1a; }
+    .top-banner .logo .profits  { color: #f5a623; }
+    .top-banner .subtitle { font-size: 0.78rem; color: #e05c5c; margin-top: 3px; }
+
+    .page { display: none; width: 100%; flex-direction: column; align-items: center; }
+    .page.active { display: flex; }
+
+    .card {
+      background: #fff; border-radius: 18px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+      max-width: 640px; width: calc(100% - 32px);
+      margin: 36px auto 40px; padding: 44px 40px 48px; text-align: center;
+    }
+
+    /* AUDIO */
+    .audio-wrap {
+      display: inline-flex; align-items: center; gap: 14px;
+      background: #27ae60; border-radius: 50px;
+      padding: 10px 20px 10px 10px; margin-bottom: 36px;
+      cursor: pointer; user-select: none;
+      box-shadow: 0 4px 18px rgba(39,174,96,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .audio-wrap:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(39,174,96,0.4); }
+    .avatar {
+      width: 46px; height: 46px; border-radius: 50%; overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.5); flex-shrink: 0;
+      background: #1e8449; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .audio-info .name { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .play-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.25); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0;
+    }
+    .play-btn svg { width: 16px; height: 16px; }
+    .waveform { display: flex; align-items: center; gap: 2px; height: 28px; }
+    .waveform span {
+      display: block; width: 3px; background: rgba(255,255,255,0.7);
+      border-radius: 2px; animation: wave 1.2s ease-in-out infinite;
+    }
+    .waveform span:nth-child(1) { height: 8px;  animation-delay: 0s; }
+    .waveform span:nth-child(2) { height: 16px; animation-delay: 0.1s; }
+    .waveform span:nth-child(3) { height: 22px; animation-delay: 0.2s; }
+    .waveform span:nth-child(4) { height: 12px; animation-delay: 0.3s; }
+    .waveform span:nth-child(5) { height: 20px; animation-delay: 0.4s; }
+    .waveform span:nth-child(6) { height: 10px; animation-delay: 0.15s; }
+    .waveform span:nth-child(7) { height: 18px; animation-delay: 0.25s; }
+    .waveform span:nth-child(8) { height: 6px;  animation-delay: 0.35s; }
+    .waveform.paused span { animation-play-state: paused; }
+    @keyframes wave {
+      0%, 100% { transform: scaleY(1); opacity: 0.7; }
+      50%       { transform: scaleY(1.6); opacity: 1; }
+    }
+    .time-label { color: rgba(255,255,255,0.9); font-size: 0.8rem; font-weight: 600; }
+    audio { display: none; }
+
+    /* BUTTON */
+    .btn-continue {
+      display: block; width: 100%; padding: 18px;
+      background: #27ae60; color: #fff;
+      font-family: 'Nunito', sans-serif; font-size: 1.05rem; font-weight: 800;
+      border: none; border-radius: 10px; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(39,174,96,0.35);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-continue:hover { background: #219150; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(39,174,96,0.4); }
+
+    /* PAGE 1 */
+    .check-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 2.5px solid #27ae60;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      animation: pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .check-circle svg { color: #27ae60; width: 28px; height: 28px; }
+    @keyframes pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .p1-title { font-size: 1.75rem; font-weight: 800; color: #1a1a1a; margin-bottom: 6px; }
+    .p1-confirmed { font-size: 1.2rem; font-weight: 700; color: #27ae60; margin-bottom: 18px; }
+    .p1-body { font-size: 0.97rem; color: #555; line-height: 1.6; margin-bottom: 28px; }
+    .warning-box {
+      background: #fff5f5; border: 1px solid #fcd9d9; border-radius: 12px;
+      padding: 18px 22px; text-align: left; margin-bottom: 32px;
+    }
+    .warning-box .w-title { font-weight: 800; color: #cc3333; margin-bottom: 6px; font-size: 0.97rem; }
+    .warning-box p { font-size: 0.92rem; color: #555; line-height: 1.55; }
+    .warning-box strong { color: #1a1a1a; }
+
+    /* PAGE 3 */
+    .p3-title { font-size: 1.7rem; font-weight: 800; color: #1a1a1a; line-height: 1.3; margin-bottom: 20px; }
+    .p3-title .green { color: #27ae60; }
+    .p3-body { font-size: 0.97rem; color: #555; line-height: 1.65; margin-bottom: 10px; }
+    .p3-body strong { color: #1a1a1a; }
+    .p3-label { font-size: 0.97rem; font-weight: 800; color: #1a1a1a; margin: 22px 0 14px; }
+    .check-card {
+      background: #f9faff; border: 1.5px solid #dde3f0; border-radius: 14px;
+      padding: 22px 26px; margin-bottom: 6px; text-align: left;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .check-card.chase { border-top: 4px solid #003087; }
+    .check-card.wells { border-top: 4px solid #d71e28; }
+    .check-bank-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .bank-logo-chase { font-size: 1.15rem; font-weight: 900; color: #003087; letter-spacing: 1px; }
+    .bank-logo-chase .icon { color: #0070cc; }
+    .bank-logo-wells {
+      background: #d71e28; color: #fff; font-size: 0.8rem; font-weight: 900;
+      padding: 3px 10px; border-radius: 4px; letter-spacing: 1px;
+    }
+    .check-num { font-size: 0.78rem; color: #aaa; }
+    .check-date { font-size: 0.78rem; color: #aaa; text-align: right; margin-bottom: 8px; }
+    .check-payto-label { font-size: 0.68rem; color: #bbb; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .check-main-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .check-payee { font-size: 1.1rem; font-weight: 800; color: #1a1a1a; }
+    .check-amount {
+      font-size: 1.1rem; font-weight: 800; color: #1a7a3c;
+      border: 1.5px solid #bbb; border-radius: 6px; padding: 5px 14px; white-space: nowrap;
+    }
+    .check-memo { font-size: 0.75rem; color: #bbb; margin-top: 10px; }
+    .check-sig { text-align: right; font-family: 'Brush Script MT', cursive; font-size: 1.35rem; color: #333; margin-top: 6px; }
+    .check-routing { text-align: center; font-size: 0.68rem; color: #ccc; margin-top: 10px; letter-spacing: 2px; }
+    .check-disclaimer { font-size: 0.74rem; color: #bbb; font-style: italic; text-align: center; margin: 6px 0 22px; }
+    .testimonial {
+      background: #fff; border: 1px solid #e8e8e8; border-radius: 12px;
+      padding: 18px 20px; text-align: left; margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .testimonial .t-name { font-weight: 800; font-size: 0.97rem; color: #1a1a1a; margin-bottom: 8px; }
+    .testimonial .t-name span { font-weight: 400; color: #888; }
+    .testimonial p { font-size: 0.9rem; color: #555; line-height: 1.6; font-style: italic; }
+
+    /* PAGE 4 */
+    .p4-title { font-size: 1.7rem; font-weight: 800; color: #1a1a1a; margin-bottom: 10px; }
+    .p4-sub { font-size: 0.97rem; color: #555; line-height: 1.6; margin-bottom: 28px; }
+    .field-label { font-size: 0.95rem; font-weight: 700; color: #1a1a1a; text-align: left; margin-bottom: 8px; display: block; }
+    .name-input {
+      width: 100%; padding: 15px 18px; font-size: 1rem; font-family: 'Nunito', sans-serif;
+      border: 2px solid #27ae60; border-radius: 10px; outline: none;
+      color: #333; background: #fff; transition: box-shadow 0.2s;
+      margin-bottom: 18px;
+    }
+    .name-input:focus { box-shadow: 0 0 0 4px rgba(39,174,96,0.15); }
+    .name-input::placeholder { color: #bbb; }
+
+    /* PAGE 5 – Loading */
+    .p5-title { font-size: 1.55rem; font-weight: 800; color: #1a1a1a; margin-bottom: 28px; }
+    .spinner {
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 4px solid #e8e8e8; border-top-color: #27ae60;
+      animation: spin 0.8s linear infinite; margin: 0 auto 18px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-msg { font-size: 0.97rem; color: #888; margin-bottom: 28px; min-height: 24px; transition: opacity 0.4s; }
+
+    .specialist-card {
+      background: #f0faf4; border: 1.5px solid #a8dfc0; border-radius: 14px;
+      padding: 20px 24px; margin-bottom: 24px; text-align: center;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .specialist-card.show { opacity: 1; transform: translateY(0); }
+    .specialist-card .sc-label { font-size: 0.78rem; font-weight: 800; color: #27ae60; letter-spacing: 1px; margin-bottom: 8px; }
+    .specialist-card .sc-name { font-size: 1.15rem; font-weight: 800; color: #1a1a1a; margin-bottom: 4px; }
+    .specialist-card .sc-sub { font-size: 0.85rem; color: #888; }
+
+    .step-list { display: flex; flex-direction: column; gap: 10px; }
+    .step-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #fff; border: 1px solid #e8e8e8; border-radius: 10px;
+      padding: 13px 18px; font-size: 0.93rem; color: #444; font-weight: 600;
+      opacity: 0; transform: translateX(-10px);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .step-row.show { opacity: 1; transform: translateX(0); }
+    .step-row .step-right { display: flex; align-items: center; gap: 8px; }
+    .step-bar {
+      width: 80px; height: 5px; background: #e8e8e8; border-radius: 3px; overflow: hidden;
+    }
+    .step-bar-fill {
+      height: 100%; background: #27ae60; border-radius: 3px; width: 0;
+      transition: width 0.8s ease;
+    }
+    .step-check { color: #27ae60; font-size: 1rem; opacity: 0; transition: opacity 0.3s; }
+    .step-check.show { opacity: 1; }
+
+    /* PAGE 6 – Earnings */
+    .p6-badge {
+      display: inline-block; background: #f0faf4; border: 1.5px solid #a8dfc0;
+      border-radius: 50px; padding: 7px 18px; font-size: 0.85rem; font-weight: 700;
+      color: #27ae60; margin-bottom: 20px;
+    }
+    .p6-title { font-size: 1.6rem; font-weight: 800; color: #1a1a1a; line-height: 1.3; margin-bottom: 28px; }
+    .p6-title .user-name { color: #27ae60; }
+
+    .earnings-card {
+      background: #fff; border: 1.5px solid #e8e8e8; border-radius: 14px;
+      padding: 28px 24px; margin-bottom: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .earnings-label { font-size: 0.72rem; color: #aaa; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+    .earnings-daily { font-size: 2.8rem; font-weight: 800; color: #27ae60; margin-bottom: 4px; }
+    .earnings-per { font-size: 0.85rem; color: #aaa; margin-bottom: 20px; }
+    .earnings-divider { border: none; border-top: 1px solid #f0f0f0; margin-bottom: 18px; }
+    .earnings-row { display: flex; justify-content: center; gap: 48px; }
+    .earnings-col .ec-val { font-size: 1.2rem; font-weight: 800; color: #27ae60; }
+    .earnings-col .ec-lbl { font-size: 0.82rem; color: #aaa; margin-top: 2px; }
+
+    .p6-check-title { font-size: 1.1rem; font-weight: 800; color: #1a1a1a; margin-bottom: 16px; }
+    .p6-body { font-size: 0.95rem; color: #555; line-height: 1.65; text-align: left; margin: 16px 0 28px; }
+    .p6-body strong { color: #1a1a1a; }
+
+    /* PAGE 9 – Spots Remaining */
+    .p9-badge {
+      display: inline-block; background: #fff8e6; border: 1.5px solid #f5c842;
+      border-radius: 50px; padding: 7px 18px; font-size: 0.88rem; font-weight: 700;
+      color: #b07d00; margin-bottom: 20px;
+    }
+    .p9-title { font-size: 1.6rem; font-weight: 800; color: #1a1a1a; line-height: 1.35; margin-bottom: 10px; }
+    .p9-title .red { color: #e03030; }
+    .p9-sub { font-size: 0.95rem; color: #888; margin-bottom: 22px; }
+
+    .spots-card {
+      background: #fff; border: 1.5px solid #e8e8e8; border-radius: 14px;
+      padding: 26px 24px; margin-bottom: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .spots-label { font-size: 0.72rem; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
+    .spots-count-row { display: flex; align-items: baseline; justify-content: center; gap: 8px; margin-bottom: 4px; }
+    .spots-num { font-size: 3rem; font-weight: 800; color: #27ae60; line-height: 1; transition: color 0.4s; }
+    .spots-num.urgent { color: #e03030; }
+    .spots-text { font-size: 1rem; color: #555; font-weight: 600; }
+    .spots-price { font-size: 0.88rem; color: #888; margin-bottom: 16px; }
+    .spots-bar-wrap { background: #e8e8e8; border-radius: 6px; height: 10px; overflow: hidden; margin-bottom: 10px; }
+    .spots-bar-fill { height: 100%; background: #e03030; border-radius: 6px; width: 0; transition: width 1.2s ease; }
+    .spots-bar-label { font-size: 0.82rem; color: #888; }
+
+    .p9-urgent-badge {
+      display: inline-block; background: #fff0f0; border: 1.5px solid #ffcccc;
+      border-radius: 50px; padding: 7px 18px; font-size: 0.88rem; font-weight: 700;
+      color: #e03030; margin: 16px 0 0;
+      opacity: 0; transform: scale(0.8);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .p9-urgent-badge.show { opacity: 1; transform: scale(1); }
+
+    /* Fade-in utility */
+    .p9-fade { opacity: 0; transform: translateY(14px); transition: opacity 0.5s, transform 0.5s; }
+    .p9-fade.show { opacity: 1; transform: translateY(0); }
+    #tanyaCard { max-height: 0; overflow: hidden; opacity: 0; margin-bottom: 0; transition: max-height 0.6s ease, opacity 0.5s, margin-bottom 0.5s; transform: none; }
+    #tanyaCard.show { max-height: 400px; opacity: 1; margin-bottom: 4px; }
+
+    /* Confirm section */
+    .p9-confirm-title { font-size: 1.4rem; font-weight: 800; color: #1a1a1a; margin: 28px 0 4px; line-height: 1.35; }
+    .p9-confirm-name { font-size: 1.4rem; font-weight: 800; color: #27ae60; text-transform: uppercase; margin-bottom: 22px; }
+
+    .feature-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 14px 0; border-bottom: 1px solid #f0f0f0; text-align: left;
+    }
+    .feature-row:last-child { border-bottom: none; }
+    .feature-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+    .feature-title { font-size: 0.97rem; font-weight: 800; color: #1a1a1a; margin-bottom: 3px; }
+    .feature-desc { font-size: 0.88rem; color: #888; line-height: 1.5; }
+
+    /* Price confirm card */
+    .price-confirm-card {
+      background: #fff; border: 1.5px solid #e8e8e8; border-radius: 14px;
+      padding: 26px 24px; margin: 24px 0 16px; text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .price-confirm-label { font-size: 0.9rem; font-weight: 700; color: #555; margin-bottom: 10px; }
+    .price-confirm-amount { font-size: 2.8rem; font-weight: 800; color: #27ae60; margin-bottom: 6px; }
+    .price-confirm-sub { font-size: 0.82rem; color: #aaa; margin-bottom: 18px; }
+    .btn-confirm {
+      display: block; width: 100%; padding: 20px;
+      background: linear-gradient(135deg, #27ae60, #1e8449);
+      color: #fff; font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800;
+      border: none; border-radius: 12px; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(39,174,96,0.4);
+      transition: transform 0.15s, box-shadow 0.2s;
+      text-align: center; margin-bottom: 10px;
+    }
+    .btn-confirm:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(39,174,96,0.45); }
+    .btn-confirm .sub { font-size: 0.82rem; font-weight: 600; opacity: 0.85; display: block; margin-top: 3px; }
+    .price-confirm-badges { font-size: 0.82rem; color: #aaa; margin-bottom: 20px; }
+    .btn-no-thanks {
+      display: block; text-align: center; font-size: 0.85rem; color: #aaa;
+      text-decoration: underline; cursor: pointer; background: none; border: none;
+      font-family: 'Nunito', sans-serif; width: 100%; padding: 8px 0;
+    }
+
+    /* Sticky bottom bar */
+    .sticky-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #1e8449; color: #fff; padding: 14px 20px;
+      display: none; flex-direction: column; align-items: center;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.2); z-index: 100;
+    }
+    .sticky-bar.show { display: flex; }
+    .sticky-bar .sb-btn {
+      font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800;
+      background: #fff; color: #1e8449; border: none; border-radius: 8px;
+      padding: 12px 32px; cursor: pointer; width: 100%; max-width: 400px;
+    }
+    .sticky-bar .sb-sub { font-size: 0.78rem; opacity: 0.8; margin-top: 4px; }
+
+    /* PAGE 8 – Discount Loading + Reveal */
+    .p8-spinner {
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 4px solid #e8e8e8; border-top-color: #27ae60;
+      animation: spin 0.8s linear infinite; margin: 0 auto 18px;
+    }
+    .p8-loading-title { font-size: 1.45rem; font-weight: 800; color: #1a1a1a; margin-bottom: 10px; }
+    .p8-loading-msg { font-size: 0.95rem; color: #888; }
+
+    .p8-result { display: none; text-align: center; }
+    .p8-result.show { display: block; }
+
+    .p8-check-anim {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 2.5px solid #27ae60;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      animation: pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .p8-check-anim svg { color: #27ae60; width: 28px; height: 28px; }
+
+    .p8-qualify { font-size: 1.55rem; font-weight: 800; color: #1a1a1a; margin-bottom: 10px; }
+    .p8-qualify .green { color: #27ae60; }
+    .p8-normal-price { font-size: 0.97rem; color: #666; margin-bottom: 18px; }
+    .p8-normal-price strong { color: #1a1a1a; }
+
+    .price-strike {
+      font-size: 2.4rem; font-weight: 800; color: #ccc;
+      text-decoration: line-through; margin-bottom: 8px;
+      transition: all 0.4s;
+    }
+    .price-current {
+      font-size: 3.2rem; font-weight: 800; color: #1a1a1a;
+      transition: color 0.5s, transform 0.4s;
+      display: inline-block;
+    }
+    .price-current.final {
+      color: #27ae60;
+      animation: pricePop 0.6s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes pricePop {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+    .price-tag {
+      display: inline-block; background: #27ae60; color: #fff;
+      font-size: 0.8rem; font-weight: 800; padding: 4px 12px;
+      border-radius: 20px; margin-bottom: 24px; opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .price-tag.show { opacity: 1; }
+
+    /* PAGE 7 */
+    .p7-title { font-size: 1.65rem; font-weight: 800; color: #1a1a1a; line-height: 1.3; margin-bottom: 16px; }
+    .p7-title .price { color: #f5a623; }
+    .not-charged-box {
+      background: #fff5f5; border: 1px solid #fcd9d9; border-radius: 10px;
+      padding: 14px 20px; margin-bottom: 22px; font-size: 0.95rem; color: #cc3333; line-height: 1.5;
+    }
+    .not-charged-box strong { font-weight: 900; text-decoration: underline; }
+    .p7-body { font-size: 0.95rem; color: #555; line-height: 1.65; text-align: left; margin-bottom: 16px; }
+    .p7-body strong { color: #1a1a1a; }
+    .p7-question { font-size: 1.1rem; font-weight: 800; color: #1a1a1a; margin: 24px 0 14px; }
+    .radio-option {
+      display: flex; align-items: center; gap: 14px;
+      background: #fff; border: 1.5px solid #e0e0e0; border-radius: 10px;
+      padding: 16px 18px; margin-bottom: 10px; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s; font-size: 0.97rem; font-weight: 600; color: #333;
+    }
+    .radio-option:hover { border-color: #27ae60; background: #f5fff8; }
+    .radio-option.selected { border-color: #27ae60; background: #f0faf4; }
+    .radio-dot {
+      width: 20px; height: 20px; border-radius: 50%; border: 2px solid #ccc;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s;
+    }
+    .radio-option.selected .radio-dot { border-color: #27ae60; }
+    .radio-dot-inner {
+      width: 10px; height: 10px; border-radius: 50%; background: #27ae60;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .radio-option.selected .radio-dot-inner { opacity: 1; }
+
+    /* PAGE 2 */
+    .badge {
+      display: inline-block; background: #fff3cd; border: 1px solid #f5c842;
+      border-radius: 50px; padding: 6px 18px; font-size: 0.85rem; font-weight: 700;
+      color: #b07d00; margin-bottom: 22px;
+    }
+    .p2-title { font-size: 1.65rem; font-weight: 800; color: #1a1a1a; line-height: 1.3; margin-bottom: 6px; }
+    .p2-title .highlight { color: #e03030; }
+    .body-text { font-size: 0.97rem; color: #555; line-height: 1.65; text-align: left; margin-bottom: 16px; }
+    .body-text .red { color: #e03030; font-weight: 700; }
+    .problems { display: flex; flex-direction: column; gap: 16px; margin: 24px 0; }
+    .problem-card {
+      background: #fff; border: 1px solid #e8e8e8; border-radius: 12px;
+      padding: 18px 20px; text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .problem-card .p-title { font-weight: 800; font-size: 0.97rem; color: #1a1a1a; margin-bottom: 6px; }
+    .problem-card p { font-size: 0.9rem; color: #666; line-height: 1.55; }
+    .not-fault { font-size: 0.97rem; color: #555; line-height: 1.65; text-align: left; margin-bottom: 28px; }
+    .not-fault strong { color: #1a1a1a; }
+  </style>
+</head>
+<body>
+
+  <header class="top-banner">
+    <div class="logo">
+      <span>💰</span>
+      <span class="proverbs">Proverbs</span>
+      <span class="profits">Profits</span>
+    </div>
+    <p class="subtitle">Do not close this page. It may cause issues accessing your purchase.</p>
+  </header>
+
+  <!-- PAGE 1 -->
+  <div class="page active" id="page1">
+    <div class="card">
+      <div class="audio-wrap" onclick="togglePlay(1)">
+        <div class="avatar">
+          <!-- Substitua o src pela URL da sua foto -->
+          <img src="http://choicedivinelight.com/wp-content/uploads/2026/04/chuck-wagner.jpg" alt="Chuck Wagner" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>
+        </div>
+        <div class="audio-info"><div class="name">Chuck Wagner</div></div>
+        <button class="play-btn">
+          <svg id="playIcon1" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon1" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="waveform paused" id="waveform1">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span class="time-label" id="timeLabel1">0:00</span>
+      </div>
+      <audio id="audio1" src="http://choicedivinelight.com/wp-content/uploads/2026/04/step1.mp3" preload="metadata"></audio>
+
+      <div class="check-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6L9 17l-5-5"/>
+        </svg>
+      </div>
+      <h1 class="p1-title">Welcome To Proverbs Profits!</h1>
+      <p class="p1-confirmed">Your Payment Has Been Confirmed.</p>
+      <p class="p1-body">You'll have full access in just a few moments. But first, there's something important I need to share with you.</p>
+      <div class="warning-box">
+        <div class="w-title">⚠️ Important:</div>
+        <p>Do <strong>not</strong> close this page, refresh, or navigate away. Doing so may cause issues accessing your purchase.</p>
+      </div>
+      <button class="btn-continue" onclick="goTo('page2')">Continue</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page" id="page2">
+    <div class="card">
+      <div class="audio-wrap" onclick="togglePlay(2)">
+        <div class="avatar">
+          <img src="http://choicedivinelight.com/wp-content/uploads/2026/04/chuck-wagner.jpg" alt="Chuck Wagner" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>
+        </div>
+        <div class="audio-info"><div class="name">Chuck Wagner</div></div>
+        <button class="play-btn">
+          <svg id="playIcon2" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon2" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="waveform paused" id="waveform2">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span class="time-label" id="timeLabel2">0:00</span>
+      </div>
+      <audio id="audio2" src="http://choicedivinelight.com/wp-content/uploads/2026/04/step2.mp3" preload="metadata"></audio>
+
+      <div class="badge">⚠️ Something Troubling</div>
+      <h1 class="p2-title">
+        I'm Proud Of What Proverbs Profits Has Done.<br/>
+        But <span class="highlight">Only 15%</span> Actually Earn Money.
+      </h1>
+      <p class="body-text" style="margin-top:20px;">
+        Since launching, I've watched everyday people — teachers, truck drivers, retirees — start earning real money from home. But when I looked at the numbers, only <span class="red">15% were actually seeing earnings.</span>
+      </p>
+      <p class="body-text">
+        I asked 100 users why. It wasn't because the system didn't work. It worked perfectly for everyone who used it correctly. The real problems:
+      </p>
+      <div class="problems">
+        <div class="problem-card">
+          <div class="p-title">❌ Life got busy</div>
+          <p>Between work, family, and church — they ran out of time to finish setup.</p>
+        </div>
+        <div class="problem-card">
+          <div class="p-title">❌ Technology was overwhelming</div>
+          <p>They opened it up, saw settings, and felt lost. Not everyone grew up with computers.</p>
+        </div>
+        <div class="problem-card">
+          <div class="p-title">❌ They got interrupted and never came back</div>
+          <p>A phone call, the kids, life happened — they forgot where they left off and gave up.</p>
+        </div>
+      </div>
+      <p class="not-fault">It's <strong>not their fault.</strong> They just didn't have the time or tech skills to set everything up.</p>
+      <button class="btn-continue" onclick="goTo('page3')">So What's The Solution?</button>
+    </div>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="page" id="page3">
+    <div class="card">
+
+      <div class="audio-wrap" onclick="togglePlay(3)">
+        <div class="avatar">
+          <img src="http://choicedivinelight.com/wp-content/uploads/2026/04/chuck-wagner.jpg" alt="Chuck Wagner" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>
+        </div>
+        <div class="audio-info"><div class="name">Chuck Wagner</div></div>
+        <button class="play-btn">
+          <svg id="playIcon3" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon3" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="waveform paused" id="waveform3">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span class="time-label" id="timeLabel3">0:00</span>
+      </div>
+      <audio id="audio3" src="http://choicedivinelight.com/wp-content/uploads/2026/04/step3.mp3" preload="metadata"></audio>
+
+      <h1 class="p3-title">What If I Did <span class="green">All The Work</span> For You?</h1>
+
+      <p class="p3-body">What if my team handled every piece of setup — every income stream, every configuration — so all you have to do is log in? <strong>No tech. No confusion. Zero chance of failure.</strong></p>
+
+      <p class="p3-label">Here's What Happened When I Started Doing It For People:</p>
+
+      <!-- CHECK 1 – Chase -->
+      <div class="check-card chase">
+        <div class="check-bank-row">
+          <img src="http://choicedivinelight.com/wp-content/uploads/2026/04/69a4c1b5167da4a97aaf1695.png" alt="Chase" style="height:28px;object-fit:contain;"/>
+          <div class="check-num">#4460</div>
+        </div>
+        <div class="check-date">Date: Feb 24, 2026</div>
+        <div class="check-payto-label">PAY TO THE ORDER OF</div>
+        <div class="check-main-row">
+          <div class="check-payee">Brenda Washington</div>
+          <div class="check-amount">$18,913.14</div>
+        </div>
+        <div class="check-memo">MEMO: Proverbs Profits — DFY Earnings</div>
+        <div class="check-sig">Chuck Wagner</div>
+        <div class="check-routing">⑆ 0746183116⑆ 261320988  4460</div>
+      </div>
+      <p class="check-disclaimer">*Projected potential earnings after confirming the Done-For-You setup</p>
+
+      <div class="testimonial">
+        <div class="t-name">Brenda Washington <span>— Memphis, TN</span></div>
+        <p>"Church secretary for 22 years, never made more than $1,400/month. When that first check came, I sat at my kitchen table and cried. Tithed first thing Sunday, caught up on every bill, and got my grandbabies new shoes."</p>
+      </div>
+
+      <!-- CHECK 2 – Wells Fargo -->
+      <div class="check-card wells">
+        <div class="check-bank-row">
+          <img src="http://choicedivinelight.com/wp-content/uploads/2026/04/69a4c1e6753f1536776e0f8f.png" alt="Wells Fargo" style="height:28px;object-fit:contain;"/>
+          <div class="check-num">#2242</div>
+        </div>
+        <div class="check-date">Date: Feb 20, 2026</div>
+        <div class="check-payto-label">PAY TO THE ORDER OF</div>
+        <div class="check-main-row">
+          <div class="check-payee">Bobby Ray McAllister</div>
+          <div class="check-amount">$22,521.19</div>
+        </div>
+        <div class="check-memo">MEMO: Proverbs Profits — DFY Earnings</div>
+        <div class="check-sig">Chuck Wagner</div>
+        <div class="check-routing">⑆ 0149006166⑆ 585457018  2242</div>
+      </div>
+      <p class="check-disclaimer">*Projected potential earnings after confirming the Done-For-You setup</p>
+
+      <div class="testimonial">
+        <div class="t-name">Bobby Ray McAllister <span>— Rural Georgia</span></div>
+        <p>"Drove a delivery truck 31 years until my back gave out. Disability barely covers the mortgage. When that deposit hit, I told my wife Donna she could quit her night shift at Waffle House. She hasn't gone back since."</p>
+      </div>
+
+      <button class="btn-continue" onclick="goTo('page4')">✓ Yes, Set Up My Account Too</button>
+    </div>
+  </div>
+
+  <!-- PAGE 4 -->
+  <div class="page" id="page4">
+    <div class="card">
+
+      <div class="audio-wrap" onclick="togglePlay(4)">
+        <div class="avatar">
+          <img src="http://choicedivinelight.com/wp-content/uploads/2026/04/chuck-wagner.jpg" alt="Chuck Wagner" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>
+        </div>
+        <div class="audio-info"><div class="name">Chuck Wagner</div></div>
+        <button class="play-btn">
+          <svg id="playIcon4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon4" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="waveform paused" id="waveform4">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span class="time-label" id="timeLabel4">0:00</span>
+      </div>
+      <audio id="audio4" src="http://choicedivinelight.com/wp-content/uploads/2026/04/step4.mp3" preload="metadata"></audio>
+
+      <h1 class="p4-title">One Quick Thing Before We Start.</h1>
+      <p class="p4-sub">We need your full name on file so we can send you payments.</p>
+
+      <label class="field-label" for="fullName">Your Full Name</label>
+      <input class="name-input" id="fullName" type="text" placeholder="e.g. James Williams" autocomplete="name"/>
+
+      <button class="btn-continue" onclick="submitName()">Start Setting Up My Account</button>
+    </div>
+  </div>
+
+  <!-- PAGE 5 – Loading -->
+  <div class="page" id="page5">
+    <div class="card">
+      <div class="audio-wrap" onclick="togglePlay(5)">
+        <div class="avatar"><img src="http://choicedivinelight.com/wp-content/uploads/2026/04/chuck-wagner.jpg" alt="Chuck Wagner" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+        <div class="audio-info"><div class="name">Chuck Wagner <span style="background:#27ae60;color:#fff;font-size:0.65rem;padding:2px 7px;border-radius:20px;margin-left:4px;font-weight:700;">NEW</span></div></div>
+        <button class="play-btn">
+          <svg id="playIcon5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon5" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="waveform paused" id="waveform5">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span class="time-label" id="timeLabel5">0:00</span>
+      </div>
+      <audio id="audio5" src="http://choicedivinelight.com/wp-content/uploads/2026/04/step5.mp3" preload="auto"></audio>
+
+      <h2 class="p5-title">⚙️ Setting Up Your Account...</h2>
+      <div class="spinner" id="loadingSpinner"></div>
+      <p class="loading-msg" id="loadingMsg">Finding a setup specialist...</p>
+
+      <div class="specialist-card" id="specialistCard">
+        <div class="sc-label">🔍 SETUP ASSISTANT FOUND</div>
+        <div class="sc-name">James W. — Seattle, WA</div>
+        <div class="sc-sub">Dedicated specialist assigned to your account</div>
+      </div>
+
+      <div class="step-list" id="stepList">
+        <div class="step-row" id="s1"><span>Connecting to earnings network</span><div class="step-right"><div class="step-bar"><div class="step-bar-fill" id="b1"></div></div><span class="step-check" id="c1">✓</span></div></div>
+        <div class="step-row" id="s2"><span>Activating income streams</span><div class="step-right"><div class="step-bar"><div class="step-bar-fill" id="b2"></div></div><span class="step-check" id="c2">✓</span></div></div>
+        <div class="step-row" id="s3"><span>Configuring automated payouts</span><div class="step-right"><div class="step-bar"><div class="step-bar-fill" id="b3"></div></div><span class="step-check" id="c3">✓</span></div></div>
+        <div class="step-row" id="s4"><span>Applying profit multiplier</span><div class="step-right"><div class="step-bar"><div class="step-bar-fill" id="b4"></div></div><span class="step-check" id="c4">✓</span></div></div>
+        <div class="step-row" id="s5"><span>Running security check</span><div class="step-right"><div class="step-bar"><div class="step-bar-fill" id="b5"></div></div><span class="step-check" id="c5">✓</span></div></div>
+        <div class="step-row" id="s6"><span>Finalizing configuration</span><div class="step-right"><div class="step-bar"><div class="step-bar-fill" id="b6"></div></div><span class="step-check" id="c6">✓</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 6 – Earnings -->
+  <div class="page" id="page6">
+    <div class="card">
+      <div class="audio-wrap" onclick="togglePlay(6)">
+        <div class="avatar"><img src="http://choicedivinelight.com/wp-content/uploads/2026/04/chuck-wagner.jpg" alt="Chuck Wagner" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+        <div class="audio-info"><div class="name">Chuck Wagner</div></div>
+        <button class="play-btn">
+          <svg id="playIcon6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon6" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="waveform paused" id="waveform6">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span class="time-label" id="timeLabel6">0:00</span>
+      </div>
+      <audio id="audio6" src="http://choicedivinelight.com/wp-content/uploads/2026/04/step6.mp3" preload="metadata"></audio>
+
+      <div class="p6-badge">✅ Account Setup Complete</div>
+      <h1 class="p6-title">Your Projected Earnings Are In,<br/><span class="user-name" id="earningsName"></span>.</h1>
+
+      <div class="earnings-card">
+        <div class="earnings-label">PROJECTED DAILY EARNINGS</div>
+        <div class="earnings-daily">$683.85</div>
+        <div class="earnings-per">Per day with the Done-For-You setup applied</div>
+        <hr class="earnings-divider"/>
+        <div class="earnings-row">
+          <div class="earnings-col"><div class="ec-val">$20,515.50</div><div class="ec-lbl">Per Month</div></div>
+          <div class="earnings-col"><div class="ec-val">$249,605.25</div><div class="ec-lbl">Per Year</div></div>
+        </div>
+      </div>
+
+      <h2 class="p6-check-title">Your First Projected Check</h2>
+      <div class="check-card chase">
+        <div class="check-bank-row">
+          <img src="http://choicedivinelight.com/wp-content/uploads/2026/04/69a4c1b5167da4a97aaf1695.png" alt="Chase" style="height:28px;object-fit:contain;"/>
+          <div class="check-num">#5360</div>
+        </div>
+        <div class="check-date">Date: Projected</div>
+        <div class="check-payto-label">PAY TO THE ORDER OF</div>
+        <div class="check-main-row">
+          <div class="check-payee" id="checkName"></div>
+          <div class="check-amount">$20,515.50</div>
+        </div>
+        <div class="check-memo">MEMO: Proverbs Profits — DFY Earnings</div>
+        <div class="check-sig">Chuck Wagner</div>
+        <div class="check-routing">⑆ 0179301816⑆ 531729744  5360</div>
+      </div>
+      <p class="check-disclaimer">*Projected potential earnings after confirming the Done-For-You setup</p>
+
+      <p class="p6-body">Everything has been configured. Your income streams are active. Your payout settings are ready. The only thing left is for <strong>you to confirm the upgrade.</strong></p>
+
+      <button class="btn-continue" onclick="goTo('page7')">How Much Does It Cost?</button>
+    </div>
+  </div>
+
+  <!-- PAGE 7 – How Much Does It Cost -->
+  <div class="page" id="page7">
+    <div class="card">
+
+      <div class="audio-wrap" onclick="togglePlay(7)">
+        <div class="avatar"><img src="http://choicedivinelight.com/wp-content/uploads/2026/04/chuck-wagner.jpg" alt="Chuck Wagner" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+        <div class="audio-info"><div class="name">Chuck Wagner</div></div>
+        <button class="play-btn">
+          <svg id="playIcon7" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon7" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="waveform paused" id="waveform7">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span class="time-label" id="timeLabel7">0:00</span>
+      </div>
+      <audio id="audio7" src="http://choicedivinelight.com/wp-content/uploads/2026/04/step7.mp3" preload="metadata"></audio>
+
+      <h1 class="p7-title">The Done-For-You Setup<br/>Is Normally <span class="price">$1,997</span>.</h1>
+
+      <div class="not-charged-box">
+        Don't worry, you have <strong>not</strong> been charged for this.
+      </div>
+
+      <p class="p7-body">A real person on my team personally configures 14 settings, connects your earnings network, sets up bank verification, and optimizes your account. That's why it costs what it costs.</p>
+      <p class="p7-body"><strong>But depending on your situation, I may be able to bring the price down.</strong></p>
+
+      <p class="p7-question">What's Your Annual Income?</p>
+
+      <div class="radio-option" onclick="selectIncome(this)" data-value="less30">
+        <div class="radio-dot"><div class="radio-dot-inner"></div></div>
+        Less than $30,000
+      </div>
+      <div class="radio-option" onclick="selectIncome(this)" data-value="30to60">
+        <div class="radio-dot"><div class="radio-dot-inner"></div></div>
+        $30,000 – $60,000
+      </div>
+      <div class="radio-option" onclick="selectIncome(this)" data-value="60to100">
+        <div class="radio-dot"><div class="radio-dot-inner"></div></div>
+        $60,000 – $100,000
+      </div>
+      <div class="radio-option" onclick="selectIncome(this)" data-value="more100">
+        <div class="radio-dot"><div class="radio-dot-inner"></div></div>
+        More than $100,000
+      </div>
+
+      <button class="btn-continue" id="incomeBtn" style="margin-top:24px;opacity:0.4;pointer-events:none;" onclick="goTo('page8')">See My Discounted Price →</button>
+    </div>
+  </div>
+
+  <!-- PAGE 8 – Discount Reveal -->
+  <div class="page" id="page8">
+    <div class="card">
+
+      <div class="audio-wrap" onclick="togglePlay(8)">
+        <div class="avatar"><img src="http://choicedivinelight.com/wp-content/uploads/2026/04/chuck-wagner.jpg" alt="Chuck Wagner" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+        <div class="audio-info"><div class="name">Chuck Wagner</div></div>
+        <button class="play-btn">
+          <svg id="playIcon8" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon8" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="waveform paused" id="waveform8">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span class="time-label" id="timeLabel8">0:00</span>
+      </div>
+      <audio id="audio8" src="" preload="metadata"></audio>
+
+      <!-- Loading state -->
+      <div id="p8Loading">
+        <div class="p8-spinner"></div>
+        <h2 class="p8-loading-title">Checking Discount Eligibility...</h2>
+        <p class="p8-loading-msg" id="p8Msg">Reviewing your answers...</p>
+      </div>
+
+      <!-- Result state -->
+      <div class="p8-result" id="p8Result">
+        <div class="p8-check-anim">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+        </div>
+        <h1 class="p8-qualify">You Qualify For A <span class="green">Discount!</span></h1>
+        <p class="p8-normal-price">Normal price: <strong>$1,997</strong>. Applying your discount now...</p>
+        <div class="price-strike" id="priceStrike">$1,997</div>
+        <div class="price-current" id="priceCurrent">$1,997</div><br/>
+        <span class="price-tag" id="priceTag">🎉 Your Special Price!</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PAGE 9 – Spots + Confirm -->
+  <div class="page" id="page9">
+    <div class="card">
+
+      <div class="audio-wrap" onclick="togglePlay(9)">
+        <div class="avatar"><img src="http://choicedivinelight.com/wp-content/uploads/2026/04/chuck-wagner.jpg" alt="Chuck Wagner" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/></div>
+        <div class="audio-info"><div class="name">Chuck Wagner</div></div>
+        <button class="play-btn">
+          <svg id="playIcon9" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="pauseIcon9" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </button>
+        <div class="waveform paused" id="waveform9">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <span class="time-label" id="timeLabel9">0:00</span>
+      </div>
+      <audio id="audio9" src="http://choicedivinelight.com/wp-content/uploads/2026/04/ElevenLabs_2026-04-27T22_59_29_pastor-_ivc_sp100_s50_sb75_se0_b_m2.mp3" preload="auto"></audio>
+
+      <div class="p9-badge">🎉 Your Price: $67</div>
+      <h1 class="p9-title">This Discount Is Only Available<br/>To A <span class="red">Limited Number</span> Of People.</h1>
+      <p class="p9-sub">Let me check how many spots are left...</p>
+
+      <!-- Availability card -->
+      <div class="spots-card">
+        <div class="spots-label">AVAILABILITY</div>
+        <div class="spots-count-row">
+          <span class="spots-num" id="spotsNum">2</span>
+          <span class="spots-text">spots remaining</span>
+        </div>
+        <div class="spots-price">at $67</div>
+        <div class="spots-bar-wrap">
+          <div class="spots-bar-fill" id="spotsBarFill"></div>
+        </div>
+        <div class="spots-bar-label" id="spotsBarLabel">8 out of 10 discount spots have been claimed</div>
+      </div>
+
+      <div class="p9-urgent-badge" id="urgentBadge">🔥 Only 1 Spot Remaining!</div>
+
+      <!-- Confirm section – hidden initially -->
+      <!-- Tanya card – appears at second 7 -->
+      <div class="p9-fade" id="tanyaCard" style="margin-bottom:4px;">
+        <div style="background:#f0faf4;border:1.5px solid #a8dfc0;border-radius:14px;padding:16px 20px;text-align:left;margin-bottom:4px;">
+          <div style="font-size:0.82rem;font-weight:800;color:#27ae60;margin-bottom:10px;">✅ Tanya Brown just confirmed the Done-For-You setup and received her first check:</div>
+          <div style="background:#f9faff;border:1.5px solid #dde3f0;border-radius:10px;padding:16px 20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <img src="http://choicedivinelight.com/wp-content/uploads/2026/04/69a4c1b5167da4a97aaf1695.png" alt="Chase" style="height:22px;object-fit:contain;"/>
+              <span style="font-size:0.75rem;color:#aaa;">#7328</span>
+            </div>
+            <div style="font-size:0.72rem;color:#aaa;margin-bottom:4px;">Date: Feb 28, 2026</div>
+            <div style="font-size:0.65rem;color:#bbb;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">PAY TO THE ORDER OF</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+              <div style="font-size:1rem;font-weight:800;color:#1a1a1a;">Tanya Brown</div>
+              <div style="font-size:1rem;font-weight:800;color:#1a7a3c;border:1.5px solid #bbb;border-radius:6px;padding:4px 12px;white-space:nowrap;">$19,847.32</div>
+            </div>
+            <div style="font-size:0.72rem;color:#bbb;margin-top:8px;">MEMO: Proverbs Profits — DFY Earnings</div>
+            <div style="text-align:right;font-family:'Brush Script MT',cursive;font-size:1.2rem;color:#333;margin-top:6px;">Chuck Wagner</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p9-fade" id="p9Confirm">
+        <div class="p9-confirm-title">Confirm Your Upgrade,</div>
+        <div class="p9-confirm-name" id="confirmName"></div>
+
+        <div class="feature-row">
+          <div class="feature-icon">✅</div>
+          <div><div class="feature-title">Your Account Is Already Set Up</div><div class="feature-desc">Every income stream is active and optimized by our team.</div></div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">🖥️</div>
+          <div><div class="feature-title">Eliminates The Tech Work</div><div class="feature-desc">We handle all the technical stuff so you don't have to.</div></div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">⚡</div>
+          <div><div class="feature-title">Ready To Earn Right Away</div><div class="feature-desc">Log in and your account is ready to go. No waiting.</div></div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-icon">🔒</div>
+          <div><div class="feature-title">60-Day Money-Back Guarantee</div><div class="feature-desc">If you don't earn at least $67 back in 60 days, full refund. Zero risk.</div></div>
+        </div>
+      </div>
+
+      <!-- Price card – hidden initially -->
+      <div class="p9-fade" id="p9PriceCard">
+        <div class="price-confirm-card">
+          <div class="price-confirm-label">Confirm Your Done-For-You Upgrade:</div>
+          <div class="price-confirm-amount">$67</div>
+          <div class="price-confirm-sub">One-time payment · Everything is already set up · Just confirm</div>
+          <button class="btn-confirm" onclick="alert('Redirecting to checkout...')">
+            ✅ Yes — Confirm My Upgrade Now
+            <span class="sub">Start sending me checks</span>
+          </button>
+          <div class="price-confirm-badges">🔒 Secure Checkout &nbsp;·&nbsp; 🛡️ 60-Day Guarantee &nbsp;·&nbsp; ⚡ Instant Activation</div>
+        </div>
+        <button class="btn-no-thanks" onclick="alert('Redirecting...')">No thanks, I forfeit my earnings. I'll figure it out myself.</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Sticky bar -->
+  <div class="sticky-bar" id="stickyBar">
+    <button class="sb-btn" onclick="alert('Redirecting to checkout...')">Yes — Confirm My Upgrade Now</button>
+    <div class="sb-sub">Just $67 One Time</div>
+  </div>
+
+  <script>
+    function selectIncome(el) {
+      document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      const btn = document.getElementById('incomeBtn');
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+    }
+
+    function submitName() {
+      const name = document.getElementById('fullName').value.trim();
+      if (!name) {
+        document.getElementById('fullName').style.borderColor = '#e03030';
+        document.getElementById('fullName').placeholder = 'Please enter your full name';
+        return;
+      }
+      // Store name for later pages
+      window._userName = name;
+
+      // Switch to page 5
+      document.querySelectorAll('audio').forEach(a => a.pause());
+      document.querySelectorAll('.waveform').forEach(w => w.classList.add('paused'));
+      document.querySelectorAll('[id^="playIcon"]').forEach(i => i.style.display = 'block');
+      document.querySelectorAll('[id^="pauseIcon"]').forEach(i => i.style.display = 'none');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page5').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      autoPlay(5);
+
+      // Animated sequence
+      const msgs = [
+        'Finding a setup specialist...',
+        `James W. is configuring your account now...`,
+        'Almost ready...',
+      ];
+      const steps = [
+        { row:'s1', bar:'b1', check:'c1', delay: 2200 },
+        { row:'s2', bar:'b2', check:'c2', delay: 3200 },
+        { row:'s3', bar:'b3', check:'c3', delay: 4200 },
+        { row:'s4', bar:'b4', check:'c4', delay: 5200 },
+        { row:'s5', bar:'b5', check:'c5', delay: 6200 },
+        { row:'s6', bar:'b6', check:'c6', delay: 7200 },
+      ];
+
+      // Message cycling
+      setTimeout(()=>{ document.getElementById('loadingMsg').textContent = msgs[0]; }, 0);
+      setTimeout(()=>{
+        document.getElementById('specialistCard').classList.add('show');
+        document.getElementById('loadingMsg').textContent = msgs[1];
+      }, 1800);
+      setTimeout(()=>{ document.getElementById('loadingMsg').textContent = msgs[2]; }, 5000);
+
+      // Show steps one by one
+      steps.forEach(({row, bar, check, delay}) => {
+        setTimeout(()=>{
+          document.getElementById(row).classList.add('show');
+          setTimeout(()=>{
+            document.getElementById(bar).style.width = '100%';
+            setTimeout(()=>{ document.getElementById(check).classList.add('show'); }, 900);
+          }, 200);
+        }, delay);
+      });
+
+      // After all steps → go to page 6
+      setTimeout(()=>{
+        document.getElementById('earningsName').textContent = name;
+        document.getElementById('checkName').textContent    = name;
+        goTo('page6');
+      }, 9500);
+    }
+
+    function fmt(s) {
+      return `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
+    }
+
+    function togglePlay(n) {
+      const audio     = document.getElementById('audio'+n);
+      const playIcon  = document.getElementById('playIcon'+n);
+      const pauseIcon = document.getElementById('pauseIcon'+n);
+      const waveform  = document.getElementById('waveform'+n);
+      const timeLabel = document.getElementById('timeLabel'+n);
+
+      if (audio.paused) {
+        audio.play();
+        playIcon.style.display  = 'none';
+        pauseIcon.style.display = 'block';
+        waveform.classList.remove('paused');
+      } else {
+        audio.pause();
+        playIcon.style.display  = 'block';
+        pauseIcon.style.display = 'none';
+        waveform.classList.add('paused');
+      }
+
+      audio.ontimeupdate = () => timeLabel.textContent = fmt(audio.currentTime);
+      audio.onended = () => {
+        playIcon.style.display  = 'block';
+        pauseIcon.style.display = 'none';
+        waveform.classList.add('paused');
+        timeLabel.textContent = '0:00';
+      };
+    }
+
+    function autoPlay(n) {
+      const audio     = document.getElementById('audio'+n);
+      const playIcon  = document.getElementById('playIcon'+n);
+      const pauseIcon = document.getElementById('pauseIcon'+n);
+      const waveform  = document.getElementById('waveform'+n);
+      const timeLabel = document.getElementById('timeLabel'+n);
+      if (!audio) return;
+      audio.play().catch(()=>{});
+      playIcon.style.display  = 'none';
+      pauseIcon.style.display = 'block';
+      waveform.classList.remove('paused');
+      audio.ontimeupdate = () => timeLabel.textContent = fmt(audio.currentTime);
+      audio.onended = () => {
+        playIcon.style.display  = 'block';
+        pauseIcon.style.display = 'none';
+        waveform.classList.add('paused');
+        timeLabel.textContent = '0:00';
+      };
+    }
+
+    // Map page id → audio number
+    const pageAudioMap = { page1:1, page2:2, page3:3, page4:4, page6:6, page7:7, page9:9 };
+
+    function startDiscountAnimation() {
+      const prices = [1997, 1597, 997, 697, 397, 97, 67];
+      const msgs = ['Reviewing your answers...', 'Calculating your discount...', 'Almost there...'];
+      const strike = document.getElementById('priceStrike');
+      const current = document.getElementById('priceCurrent');
+      const tag = document.getElementById('priceTag');
+      const loading = document.getElementById('p8Loading');
+      const result = document.getElementById('p8Result');
+      const msg = document.getElementById('p8Msg');
+
+      // Cycle loading messages
+      setTimeout(() => msg.textContent = msgs[1], 800);
+      setTimeout(() => msg.textContent = msgs[2], 1600);
+
+      // Show result after 2.4s
+      setTimeout(() => {
+        loading.style.display = 'none';
+        result.classList.add('show');
+
+        // Countdown through prices with delay
+        let i = 0;
+        function nextPrice() {
+          if (i >= prices.length) return;
+          var p = prices[i];
+          var formatted = '$' + p.toLocaleString();
+          current.textContent = formatted;
+          current.classList.remove('final');
+
+          if (i === prices.length - 1) {
+            // Final price — go green with pop
+            setTimeout(function() {
+              current.classList.add('final');
+              tag.classList.add('show');
+              setTimeout(function() { goTo('page9'); }, 2800);
+            }, 300);
+          }
+
+          i++;
+          if (i < prices.length) {
+            setTimeout(nextPrice, i === prices.length - 1 ? 2500 : 1600);
+          }
+        }
+        nextPrice();
+      }, 2400);
+    }
+
+
+
+    function startPage9Sequence() {
+      // Reset all elements
+      var barFill    = document.getElementById('spotsBarFill');
+      var spotsNum   = document.getElementById('spotsNum');
+      var barLabel   = document.getElementById('spotsBarLabel');
+      var urgent     = document.getElementById('urgentBadge');
+      var confirm    = document.getElementById('p9Confirm');
+      var priceCard  = document.getElementById('p9PriceCard');
+      var sticky     = document.getElementById('stickyBar');
+      var confirmName = document.getElementById('confirmName');
+
+      var tanyaCard  = document.getElementById('tanyaCard');
+      tanyaCard.classList.remove('show');
+      barFill.style.transition = 'none';
+      spotsNum.textContent = '2';
+      spotsNum.classList.remove('urgent');
+      barLabel.textContent = '8 out of 10 discount spots have been claimed';
+      urgent.classList.remove('show');
+      confirm.classList.remove('show');
+      priceCard.classList.remove('show');
+      sticky.classList.remove('show');
+      confirmName.textContent = window._userName || '';
+
+      // Step 1: 0.6s → bar animates to 80% (2 spots)
+      setTimeout(function() {
+        barFill.style.transition = 'width 1.2s ease';
+        barFill.style.width = '80%';
+      }, 600);
+
+      // Step 2: 7s → Tanya takes a spot → drops to 1, bar 90%, urgent badge
+      setTimeout(function() {
+        spotsNum.textContent = '1';
+        spotsNum.classList.add('urgent');
+        barFill.style.width = '90%';
+        barLabel.textContent = '9 out of 10 discount spots have been claimed';
+        // Tanya card appears then fades out after 4s
+        tanyaCard.classList.add('show');
+        setTimeout(function() { tanyaCard.classList.remove('show'); }, 4000);
+        setTimeout(function() { urgent.classList.add('show'); }, 500);
+      }, 7000);
+
+      // Step 3: 10s → confirm section (bullets + name)
+      setTimeout(function() {
+        confirm.classList.add('show');
+      }, 10000);
+
+      // Step 4: 13s → price card + sticky bar
+      setTimeout(function() {
+        priceCard.classList.add('show');
+        sticky.classList.add('show');
+      }, 13000);
+    }
+
+    function goTo(pageId) {
+      document.querySelectorAll('audio').forEach(function(a) { a.pause(); });
+      document.querySelectorAll('.waveform').forEach(function(w) { w.classList.add('paused'); });
+      document.querySelectorAll('[id^="playIcon"]').forEach(function(i) { i.style.display = 'block'; });
+      document.querySelectorAll('[id^="pauseIcon"]').forEach(function(i) { i.style.display = 'none'; });
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+      document.getElementById('stickyBar').classList.remove('show');
+      var target = document.getElementById(pageId);
+      if (target) { target.classList.add('active'); }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (pageAudioMap[pageId]) autoPlay(pageAudioMap[pageId]);
+      if (pageId === 'page8') startDiscountAnimation();
+      if (pageId === 'page9') startPage9Sequence();
+    }
+
+    // Page 1 audio starts manually when person clicks the player
+  </script>
+</body>
+</html>
