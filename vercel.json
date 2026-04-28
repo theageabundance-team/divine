@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/up2/:path*",
+      "destination": "https://support-blond-one.vercel.app/:path*"
+    }
+  ]
+}
