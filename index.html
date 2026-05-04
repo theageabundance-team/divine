@@ -1,705 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Proverbs System Pro — Exclusive One-Time Offer</title>
-<script src="https://www.digistore24-scripts.com/service/digistore.js"></script><script>digistoreUpsell()</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --white: #FFFFFF;
-    --off: #F9F8F6;
-    --ink: #18181B;
-    --ink-soft: #3F3F46;
-    --muted: #71717A;
-    --subtle: #A1A1AA;
-    --border: #E4E4E7;
-    --navy: #1B2A4A;
-    --navy-mid: #2D4170;
-    --accent: #2563EB;
-    --accent-soft: #EFF6FF;
-    --gold: #92400E;
-    --gold-mid: #B45309;
-    --gold-bg: #FFFBEB;
-    --gold-border: #FDE68A;
-    --gold-bright: #D97706;
-    --green: #15803D;
-    --green-bg: #F0FDF4;
-    --shadow: 0 4px 16px rgba(0,0,0,0.07);
-    --shadow-lg: 0 16px 48px rgba(0,0,0,0.12);
-    --r: 10px;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Special One-Time Offer - Digital Skills</title>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --surface: #ffffff;
+      --text: #142033;
+      --muted: #5c6b82;
+      --line: #dde5f2;
+      --primary: #204ecf;
+      --primary-dark: #173ea9;
+      --accent: #0f172a;
+      --success: #0f766e;
+      --success-dark: #0b5953;
+      --warning: #ff4742;
+      --max: 900px; /* Upsell pages are usually narrower for better readability */
+      --radius: 16px;
+      --shadow: 0 12px 32px rgba(20,32,51,0.08);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0; 
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; border-radius: 8px; }
+    
+    .container { width: min(calc(100% - 32px), var(--max)); margin: 0 auto; }
+    
+    /* Progress Bar */
+    .top-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      padding: 15px 0;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .progress-container {
+      max-width: 400px;
+      height: 8px;
+      background: var(--line);
+      margin: 10px auto 0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 75%; /* Indicating they are almost done */
+      background: var(--success);
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Jost', sans-serif;
-    background: var(--off);
-    color: var(--ink);
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
+    /* Warning / Attention Header */
+    .attention-banner {
+      background: #fff4f4;
+      color: var(--warning);
+      text-align: center;
+      padding: 15px;
+      font-weight: bold;
+      border-bottom: 1px solid #ffe0e0;
+      font-size: 18px;
+    }
 
-  .top-banner {
-    background: linear-gradient(90deg, var(--navy) 0%, var(--navy-mid) 100%);
-    color: white;
-    text-align: center;
-    padding: 13px 20px;
-    font-size: 13px;
-    letter-spacing: 0.04em;
-  }
-  .top-banner strong { color: #FCD34D; }
+    /* Main Content */
+    main { padding: 50px 0; flex-grow: 1; }
+    
+    .upsell-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 40px;
+      text-align: center;
+    }
 
-  header {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    padding: 18px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .brand {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--navy);
-  }
-  .brand span { color: var(--accent); }
-  .brand .pro-badge {
-    display: inline-block;
-    background: var(--gold-bg);
-    color: var(--gold-mid);
-    border: 1px solid var(--gold-border);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-left: 8px;
-    vertical-align: middle;
-    font-family: 'Jost', sans-serif;
-  }
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #eef3ff;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+    }
 
-  .page-wrap {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 0 20px 60px;
-  }
+    h1 { 
+      font-size: clamp(28px, 4vw, 42px); 
+      line-height: 1.1; 
+      margin: 0 0 20px; 
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
 
-  .wait-label {
-    text-align: center;
-    margin: 40px 0 0;
-  }
-  .wait-pill {
-    display: inline-block;
-    background: #FEF3C7;
-    color: var(--gold);
-    border: 1px solid var(--gold-border);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 7px 18px;
-    border-radius: 100px;
-  }
+    .subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 30px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-  .hero {
-    text-align: center;
-    padding: 32px 0 36px;
-  }
-  .hero h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(34px, 5vw, 58px);
-    font-weight: 700;
-    line-height: 1.12;
-    color: var(--navy);
-    margin-bottom: 18px;
-  }
-  .hero h1 em { font-style: italic; color: var(--accent); }
-  .hero-sub {
-    font-size: 16px;
-    color: var(--muted);
-    max-width: 520px;
-    margin: 0 auto;
-    font-weight: 300;
-    line-height: 1.8;
-  }
+    /* Deliverables List */
+    .benefits-box {
+      text-align: left;
+      background: var(--bg);
+      padding: 24px;
+      border-radius: 12px;
+      margin: 30px 0;
+      border: 1px solid var(--line);
+    }
+    .benefits-box h3 { margin-top: 0; color: var(--accent); }
+    .benefits-box ul { padding-left: 20px; margin: 0; color: var(--text); }
+    .benefits-box li { margin-bottom: 12px; font-size: 16px; }
 
-  .card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 24px;
-    box-shadow: var(--shadow);
-  }
-  .card-header {
-    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
-    padding: 28px 32px 24px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-  }
-  .card-header::before {
-    content: '';
-    position: absolute;
-    top: -40px; right: -40px;
-    width: 160px; height: 160px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.04);
-  }
-  .card-header-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #93C5FD;
-    margin-bottom: 10px;
-  }
-  .card-header h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 8px;
-  }
-  .card-header p {
-    font-size: 14px;
-    color: rgba(255,255,255,0.6);
-    font-weight: 300;
-  }
-  .card-body { padding: 32px; }
+    /* Action Area */
+    .action-area {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px dashed var(--line);
+    }
 
-  .included-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-bottom: 28px;
-  }
-  .inc-row {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    padding: 16px 18px;
-    background: var(--off);
-    border-radius: var(--r);
-    border: 1px solid var(--border);
-  }
-  .inc-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-  .inc-text h4 { font-size: 14.5px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
-  .inc-text p { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  .inc-tag {
-    display: inline-block;
-    background: var(--green-bg);
-    color: var(--green);
-    font-size: 10.5px;
-    font-weight: 600;
-    padding: 2px 9px;
-    border-radius: 100px;
-    margin-top: 6px;
-    letter-spacing: 0.04em;
-  }
+    .price-display {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
 
-  .price-strip {
-    background: var(--gold-bg);
-    border: 1px solid var(--gold-border);
-    border-radius: var(--r);
-    padding: 22px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 24px;
-  }
-  .price-strip-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold-mid);
-    margin-bottom: 4px;
-  }
-  .price-strip-amount {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 44px;
-    font-weight: 700;
-    color: var(--navy);
-    line-height: 1;
-  }
-  .price-strip-amount sup {
-    font-size: 20px;
-    vertical-align: top;
-    margin-top: 8px;
-    color: var(--gold-bright);
-  }
-  .price-strip-was {
-    font-size: 13px;
-    color: var(--subtle);
-    text-decoration: line-through;
-    margin-top: 4px;
-  }
-  .price-strip-note {
-    font-size: 12px;
-    color: var(--gold-mid);
-    font-weight: 500;
-    text-align: right;
-    max-width: 200px;
-    line-height: 1.5;
-  }
+    /* Buttons */
+    .btn-accept {
+      display: block;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      background: var(--success);
+      color: white;
+      padding: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(15, 118, 110, 0.3);
+    }
+    .btn-accept:hover { background: var(--success-dark); transform: translateY(-2px); }
 
-  .btn-accept {
-    display: block;
-    width: 100%;
-    background: var(--accent);
-    color: white;
-    text-decoration: none;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 700;
-    padding: 20px 24px;
-    border-radius: var(--r);
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 6px 24px rgba(37,99,235,0.28);
-    letter-spacing: 0.02em;
-    margin-bottom: 12px;
-    font-family: 'Jost', sans-serif;
-  }
-  .btn-accept:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 10px 32px rgba(37,99,235,0.36); }
-  .btn-accept small { display: block; font-size: 11px; font-weight: 400; opacity: 0.75; margin-top: 3px; }
+    .btn-decline {
+      display: inline-block;
+      margin-top: 25px;
+      color: var(--muted);
+      font-size: 15px;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-decline:hover { color: var(--text); }
 
-  .btn-decline {
-    display: block;
-    width: 100%;
-    background: none;
-    color: var(--subtle);
-    text-align: center;
-    font-size: 12.5px;
-    font-weight: 400;
-    padding: 12px 24px;
-    border-radius: var(--r);
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    font-family: 'Jost', sans-serif;
-    letter-spacing: 0.01em;
-  }
-  .btn-decline:hover { color: var(--muted); border-color: #D1D5DB; background: var(--off); }
+    /* Guarantee */
+    .guarantee-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 30px;
+      padding: 20px;
+      background: #f8fbff;
+      border-radius: 8px;
+      text-align: left;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .guarantee-icon { font-size: 32px; }
 
-  .btn-secure {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-size: 11.5px;
-    color: var(--subtle);
-    margin-top: 14px;
-  }
+    /* Footer */
+    footer {
+      background: #0b1220;
+      color: #fff;
+      padding: 30px 0;
+      text-align: center;
+      font-size: 14px;
+    }
+    footer a { color: #cad5ea; margin: 0 10px; }
+    footer a:hover { color: #fff; }
 
-  .guarantee {
-    display: flex;
-    gap: 18px;
-    align-items: flex-start;
-    background: var(--green-bg);
-    border: 1px solid #BBF7D0;
-    border-radius: var(--r);
-    padding: 22px 22px;
-    margin-bottom: 24px;
-  }
-  .guarantee-icon { font-size: 36px; flex-shrink: 0; }
-  .guarantee h4 { font-size: 14px; font-weight: 700; color: var(--green); margin-bottom: 4px; }
-  .guarantee p { font-size: 13px; color: var(--ink-soft); line-height: 1.65; }
-
-  .compare-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 28px;
-    font-size: 13.5px;
-  }
-  .compare-table th {
-    padding: 12px 16px;
-    text-align: left;
-    background: var(--navy);
-    color: white;
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .compare-table th:first-child { border-radius: 8px 0 0 0; }
-  .compare-table th:last-child { border-radius: 0 8px 0 0; text-align: center; }
-  .compare-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    color: var(--ink-soft);
-    vertical-align: middle;
-  }
-  .compare-table td:last-child { text-align: center; }
-  .compare-table tr:last-child td { border-bottom: none; }
-  .compare-table tr:nth-child(even) td { background: var(--off); }
-  .check-yes { color: var(--green); font-size: 16px; font-weight: 700; }
-  .check-no { color: #D1D5DB; font-size: 16px; }
-
-  .disclosure {
-    background: #FFFBEB;
-    border: 1px solid var(--gold-border);
-    border-radius: var(--r);
-    padding: 18px 20px;
-    margin-bottom: 24px;
-  }
-  .disclosure p { font-size: 11.5px; color: #78350F; line-height: 1.7; }
-  .disclosure strong { font-weight: 600; }
-
-  .modal-bg {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.45);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .modal-bg.open { display: flex; }
-  .modal-panel {
-    background: white;
-    border-radius: 14px;
-    padding: 40px 36px;
-    max-width: 580px;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-  }
-  @media(max-width:500px){ .modal-panel { padding: 28px 20px; } }
-  .modal-close {
-    position: absolute; top: 14px; right: 18px;
-    font-size: 24px; cursor: pointer;
-    background: none; border: none;
-    color: var(--muted); line-height: 1;
-  }
-  .modal-panel h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 24px; font-weight: 700;
-    color: var(--navy); margin-bottom: 4px;
-  }
-  .modal-panel .mdate { font-size: 12px; color: var(--subtle); margin-bottom: 22px; }
-  .modal-panel h3 { font-size: 14px; font-weight: 700; color: var(--ink); margin: 16px 0 5px; }
-  .modal-panel p, .modal-panel li { font-size: 13px; color: var(--muted); line-height: 1.75; margin-bottom: 5px; }
-  .modal-panel ul { padding-left: 16px; }
-
-  .page-footer {
-    text-align: center;
-    padding: 0 20px 40px;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-  .footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  .footer-links a {
-    font-size: 12px;
-    color: var(--subtle);
-    text-decoration: none;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--muted); }
-  .footer-copy { font-size: 11.5px; color: #C4C4C4; }
-
-  .r { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
-  .r.on { opacity: 1; transform: none; }
-  .r2 { transition-delay: 0.1s; }
-  .r3 { transition-delay: 0.2s; }
-</style>
+    @media (max-width: 720px) {
+      .upsell-card { padding: 25px 15px; }
+      .btn-accept { font-size: 18px; padding: 18px 15px; }
+      .guarantee-box { flex-direction: column; text-align: center; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="top-banner">
-  <strong>Wait — Your order is not complete yet.</strong> &nbsp;This special offer is available one time only.
-</div>
-
-<header>
-  <div class="brand">
-    Proverbs<span>System</span>
-    <span class="pro-badge">PRO</span>
-  </div>
-</header>
-
-<div class="page-wrap">
-
-  <div class="wait-label r">
-    <span class="wait-pill">✦ &nbsp; Exclusive One-Time Upgrade Offer</span>
+  <div class="attention-banner">
+    ⚠️ WAIT! Your order is not complete yet. Do not close this page.
   </div>
 
-  <div class="hero r">
-    <h1>Take Your Knowledge <em>Further</em> With the Pro eBook Collection</h1>
-    <p class="hero-sub">You've just made a great decision. Now unlock the advanced library — a curated set of powerful eBooks designed to deepen your understanding and sharpen your skills.</p>
-  </div>
-
-  <div class="card r">
-    <div class="card-header">
-      <div class="card-header-label">Proverbs System Pro — Upgrade</div>
-      <h2>The Advanced eBook Collection for Serious Learners</h2>
-      <p>Everything in the standard library, plus a deeper, more comprehensive set of resources to go further, faster.</p>
-    </div>
-    <div class="card-body">
-
-      <p style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;">What's Included in the Pro Collection</p>
-      <div class="included-list">
-        <div class="inc-row">
-          <div class="inc-icon">📖</div>
-          <div class="inc-text">
-            <h4>Advanced Content Strategy eBook</h4>
-            <p>Go beyond the basics — learn how to build a content ecosystem that attracts, educates, and converts readers over the long term.</p>
-            <span class="inc-tag">Advanced</span>
-          </div>
-        </div>
-        <div class="inc-row">
-          <div class="inc-icon">📖</div>
-          <div class="inc-text">
-            <h4>The Audience Growth Playbook</h4>
-            <p>Practical frameworks for building a loyal, engaged audience across multiple platforms — step by step, from zero to consistent reach.</p>
-            <span class="inc-tag">Growth</span>
-          </div>
-        </div>
-        <div class="inc-row">
-          <div class="inc-icon">📖</div>
-          <div class="inc-text">
-            <h4>Niche Authority Blueprint</h4>
-            <p>How to position yourself as a trusted reference in your chosen niche — building credibility that makes recommendations more effective.</p>
-            <span class="inc-tag">Positioning</span>
-          </div>
-        </div>
-        <div class="inc-row">
-          <div class="inc-icon">📖</div>
-          <div class="inc-text">
-            <h4>Long-Form Content Mastery</h4>
-            <p>A complete guide to writing in-depth, high-value articles and reviews that rank well and consistently bring in new readers organically.</p>
-            <span class="inc-tag">Content</span>
-          </div>
-        </div>
-        <div class="inc-row">
-          <div class="inc-icon">📖</div>
-          <div class="inc-text">
-            <h4>Sustainable Systems eBook</h4>
-            <p>Learn how to build repeatable workflows and systems so your affiliate business runs consistently — without burning out or starting over.</p>
-            <span class="inc-tag">Systems</span>
-          </div>
-        </div>
+  <div class="top-bar">
+    <div class="container">
+      Step 2 of 3: Customize Your Order
+      <div class="progress-container">
+        <div class="progress-bar"></div>
       </div>
-
-      <p style="font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;">Standard vs. Pro — What You Get</p>
-      <table class="compare-table">
-        <thead>
-          <tr>
-            <th>Feature</th>
-            <th style="text-align:center;">Standard</th>
-            <th>Pro</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Core eBook library</td>
-            <td><span class="check-yes">✓</span></td>
-            <td><span class="check-yes">✓</span></td>
-          </tr>
-          <tr>
-            <td>Advanced Content Strategy eBook</td>
-            <td><span class="check-no">—</span></td>
-            <td><span class="check-yes">✓</span></td>
-          </tr>
-          <tr>
-            <td>Audience Growth Playbook</td>
-            <td><span class="check-no">—</span></td>
-            <td><span class="check-yes">✓</span></td>
-          </tr>
-          <tr>
-            <td>Niche Authority Blueprint</td>
-            <td><span class="check-no">—</span></td>
-            <td><span class="check-yes">✓</span></td>
-          </tr>
-          <tr>
-            <td>Long-Form Content Mastery</td>
-            <td><span class="check-no">—</span></td>
-            <td><span class="check-yes">✓</span></td>
-          </tr>
-          <tr>
-            <td>Sustainable Systems eBook</td>
-            <td><span class="check-no">—</span></td>
-            <td><span class="check-yes">✓</span></td>
-          </tr>
-          <tr>
-            <td>Lifetime access to all content</td>
-            <td><span class="check-yes">✓</span></td>
-            <td><span class="check-yes">✓</span></td>
-          </tr>
-          <tr>
-            <td>Future updates included</td>
-            <td><span class="check-yes">✓</span></td>
-            <td><span class="check-yes">✓</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="price-strip">
-        <div class="price-strip-left">
-          <div class="price-strip-label">Pro Upgrade — Today Only</div>
-          <div class="price-strip-amount"><sup>$</sup>67</div>
-          <div class="price-strip-was">Regular value: $147.00</div>
-        </div>
-        <div class="price-strip-note">
-          One-time payment.<br>No subscriptions.<br>Added to your existing order.
-        </div>
-      </div>
-
-      <div class="guarantee">
-        <div class="guarantee-icon">🛡️</div>
-        <div>
-          <h4>Covered by Your 60-Day Guarantee</h4>
-          <p>This upgrade is fully protected by the same 60-day money-back guarantee as your original purchase. If you're not satisfied for any reason, contact us and we'll refund the full amount — no questions asked.</p>
-        </div>
-      </div>
-
-      <!-- ACCEPT BUTTON — Digistore24 YES -->
-      <a href="https://www.checkout-ds24.com/answer/yes?template=light" class="btn-accept">
-        Yes — Add the Pro Collection to My Order
-        <small>One-time payment of $67 · Instant access · 60-day guarantee</small>
-      </a>
-
-      <div class="btn-secure">
-        🔒 &nbsp; Secure checkout &nbsp;·&nbsp; Instant delivery &nbsp;·&nbsp; No recurring charges
-      </div>
-
-      <div style="margin: 20px 0; text-align:center;">
-        <p style="font-size:11px;color:var(--subtle);letter-spacing:0.04em;margin-bottom:12px;">By clicking the button above, you agree to our <a href="#" onclick="openM('terms'); return false;" style="color:var(--accent);text-decoration:none;">Terms of Use</a> and <a href="#" onclick="openM('refund'); return false;" style="color:var(--accent);text-decoration:none;">Refund Policy</a>.</p>
-      </div>
-
-      <!-- DECLINE BUTTON — Digistore24 NO -->
-      <a href="https://www.checkout-ds24.com/answer/no" class="btn-decline">
-        No thank you — I'll skip this upgrade and continue with my standard order only.
-      </a>
-
     </div>
   </div>
 
-  <div class="disclosure r">
-    <p><strong>Earnings Disclosure:</strong> The content in this library is for educational and informational purposes only. This product does not guarantee any specific financial outcome. Individual results depend on personal effort, experience, time invested, market conditions, and other factors entirely outside our control. Results mentioned or implied are not typical and should not be interpreted as a promise or guarantee of earnings.</p>
-  </div>
+  <main>
+    <div class="container">
+      <div class="upsell-card">
+        <div class="badge">Special One-Time Offer</div>
+        
+        <h1>Fast-Track Your Results with the Protocol Pro: Video Masterclass & Templates</h1>
+        
+        <p class="subtitle">
+          You've just made a great decision by getting the Protocol Digital ebook bundle. But if you want to skip the trial-and-error and implement everything <strong>twice as fast</strong>, this upgrade is for you.
+        </p>
 
-</div><!-- /page-wrap -->
+        <!-- Optional: You can put a video or an image of the product here -->
+        <!-- <img src="URL_DA_SUA_IMAGEM_AQUI" alt="Protocol Pro Bundle" style="margin: 0 auto 30px;"> -->
 
-<div class="page-footer r">
-  <div class="footer-links">
-    <a onclick="openM('terms')">Terms of Use</a>
-    <a onclick="openM('privacy')">Privacy Policy</a>
-    <a onclick="openM('refund')">Refund Policy</a>
-    <a href="mailto:support@proverbs-system.com">Contact Support</a>
-  </div>
-  <div class="footer-copy">© 2024 Proverbs System. All rights reserved. Educational content only.</div>
-</div>
+        <div class="benefits-box">
+          <h3>What's inside the Protocol Pro Upgrade?</h3>
+          <ul>
+            <li><strong>Step-by-Step Video Masterclass:</strong> Watch over our shoulders as we set up digital routines in real-time. No guessing required.</li>
+            <li><strong>Plug-and-Play Templates:</strong> Downloadable templates for task management, digital organization, and workflow optimization.</li>
+            <li><strong>Advanced Productivity Checklist:</strong> The exact daily frameworks professionals use to save up to 2 hours a day online.</li>
+            <li><strong>Lifetime Access:</strong> Pay once, access the videos and templates forever.</li>
+          </ul>
+        </div>
 
-<!-- MODAL: TERMS -->
-<div class="modal-bg" id="m-terms">
-  <div class="modal-panel">
-    <button class="modal-close" onclick="closeM('terms')">×</button>
-    <h2>Terms of Use</h2>
-    <div class="mdate">Last updated: January 2024</div>
-    <h3>1. Acceptance of Terms</h3>
-    <p>By purchasing or accessing this upgrade, you agree to be bound by these Terms of Use in addition to those accepted at the time of your original purchase.</p>
-    <h3>2. Nature of Product</h3>
-    <p>Proverbs System Pro provides educational digital content in the form of PDF eBooks. All materials are intended solely for educational and informational purposes. Nothing in these materials constitutes financial, legal, or professional advice.</p>
-    <h3>3. One-Time Offer</h3>
-    <p>This upgrade offer is presented once, immediately following your initial purchase. The price shown is exclusive to this page and may not be available at any other time or through any other channel.</p>
-    <h3>4. Intellectual Property</h3>
-    <p>All content is the exclusive intellectual property of Proverbs System and is protected by applicable copyright laws. Redistribution, resale, or reproduction in any form without written permission is strictly prohibited.</p>
-    <h3>5. No Earnings Guarantee</h3>
-    <p>We do not guarantee any specific financial result. Results vary based on individual effort, experience, market conditions, and other factors outside our control.</p>
-    <h3>6. Limitation of Liability</h3>
-    <p>To the maximum extent permitted by law, Proverbs System shall not be liable for any indirect, incidental, or consequential damages arising from the use of our materials.</p>
-    <h3>7. Contact</h3>
-    <p>Questions: support@proverbs-system.com</p>
-  </div>
-</div>
+        <div class="action-area">
+          <div class="price-display">Just one single payment of $57</div>
 
-<!-- MODAL: PRIVACY -->
-<div class="modal-bg" id="m-privacy">
-  <div class="modal-panel">
-    <button class="modal-close" onclick="closeM('privacy')">×</button>
-    <h2>Privacy Policy</h2>
-    <div class="mdate">Last updated: January 2024</div>
-    <h3>1. Information We Collect</h3>
-    <p>We collect information provided at checkout, including name, email address, and payment details. No new personal data is collected on this upgrade page beyond what was already provided during your initial purchase.</p>
-    <h3>2. How We Use Your Information</h3>
-    <ul>
-      <li>To process your upgrade and deliver your additional eBooks;</li>
-      <li>To send purchase confirmations and access instructions;</li>
-      <li>To respond to support requests.</li>
-    </ul>
-    <h3>3. Data Sharing</h3>
-    <p>We do not sell, rent, or share your personal data with third parties except as required to process your transaction or comply with applicable law.</p>
-    <h3>4. Your Rights</h3>
-    <p>You may request access to, correction of, or deletion of your personal data at any time by contacting: support@proverbs-system.com</p>
-    <h3>5. Contact</h3>
-    <p>Privacy inquiries: support@proverbs-system.com</p>
-  </div>
-</div>
+          <!-- ACCEPT BUTTON: Link this to your Upsell Checkout or 1-Click Upsell Link -->
+          <a href="https://www.checkout-ds24.com/upsell/accept/YOUR_PRODUCT_ID" class="btn-accept">
+            Yes, Upgrade My Order for $57
+          </a>
 
-<!-- MODAL: REFUND -->
-<div class="modal-bg" id="m-refund">
-  <div class="modal-panel">
-    <button class="modal-close" onclick="closeM('refund')">×</button>
-    <h2>Refund Policy</h2>
-    <div class="mdate">Last updated: January 2024</div>
-    <h3>60-Day Money-Back Guarantee</h3>
-    <p>This upgrade is covered by our full 60-day satisfaction guarantee. If you are not satisfied with the Pro collection for any reason within 60 days of purchase, you are entitled to a complete refund of the $67 upgrade fee.</p>
-    <h3>How to Request a Refund</h3>
-    <ul>
-      <li>Email support@proverbs-system.com with subject: "Pro Upgrade Refund Request";</li>
-      <li>Include the name and email address used at checkout;</li>
-      <li>Include your order confirmation number.</li>
-    </ul>
-    <h3>Processing Time</h3>
-    <p>Approved refunds are processed within 3–5 business days. Credit timeline may vary by financial institution.</p>
-    <h3>After 60 Days</h3>
-    <p>Refund requests submitted more than 60 days after purchase will not be processed, except in cases of verified billing errors or failure to deliver the product.</p>
-    <h3>Contact</h3>
-    <p>Refund inquiries: support@proverbs-system.com</p>
-  </div>
-</div>
+          <!-- GUARANTEE -->
+          <div class="guarantee-box">
+            <div class="guarantee-icon">🛡️</div>
+            <div>
+              <p style="margin:0; font-weight:700; color:#0f172a;">60-Day Money-Back Guarantee</p>
+              <p style="font-size:13px; color:#5c6b82; margin:2px 0 0 0;">
+                Fully protected. If this upgrade doesn't save you time, get a full refund within 60 days.
+              </p>
+            </div>
+          </div>
 
-<!-- Begin of Digistore24 Trusted Badge Code -->
-<script type="text/javascript" src="https://www.digistore24.com/trusted-badge/45617/jUgh7d4NN9AZ8GH/salespage"></script>
-<!-- End of Digistore24 Trusted Badge Code -->
+          <!-- DECLINE BUTTON: Link this to your Downsell or "Thank You" Page -->
+          <a href="https://SEUSITE.COM/thank-you-page" class="btn-decline">
+            No thanks, I will pass on this one-time offer and stick to the basic ebooks only. I understand I may not see this price again.
+          </a>
+        </div>
 
-<script>
-  function openM(name) {
-    document.getElementById('m-' + name).classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeM(name) {
-    document.getElementById('m-' + name).classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  document.querySelectorAll('.modal-bg').forEach(el => {
-    el.addEventListener('click', e => {
-      if (e.target === el) { el.classList.remove('open'); document.body.style.overflow = ''; }
-    });
-  });
+      </div>
+    </div>
+  </main>
 
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.r').forEach(el => io.observe(el));
-</script>
+  <footer>
+    <div class="container">
+      <p style="margin-top: 0;">Digital Skills Protocol</p>
+      <p style="color: #85a8ff; margin-bottom: 20px;">Support: support@digitalskillsprotocol.online</p>
+      
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+        <a href="/terms" target="_blank">Terms of Use</a> |
+        <a href="/privacy" target="_blank">Privacy Policy</a> |
+        <a href="/refund" target="_blank">Refund Policy</a>
+      </div>
+      <p style="font-size: 12px; color: #5c6b82; margin-top: 15px;">© 2026 Digital Skills Protocol. All rights reserved.</p>
+    </div>
+  </footer>
+
 </body>
 </html>
